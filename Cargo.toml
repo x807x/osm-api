@@ -1,0 +1,21 @@
+[package]
+name = "osm-api"
+version = "0.1.0"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+description = "Rust binding for the Open Street Map Api"
+repository = "https://github.com/x807x/openstreetmap-api"
+readme = "README.md"
+keywords = ["openstreetmap", "api", "geospatial", "gis"]
+categories = ["api-bindings"]
+
+[dependencies]
+chrono = { version = "0.4.39", default-features = false, features = ["alloc", "serde"] }
+quick-xml = { version = "0.37.2", default-features = false, features = ["serialize"] }
+reqwest = { version = "0.12.12", default-features = false, features = ["rustls-tls"] }
+serde = { version = "1.0.217", features = ["derive"] }
+
+[dev-dependencies]
+anyhow = "1.0.95"
+dotenv = "0.15.0"
+serde_json = "1.0.138"

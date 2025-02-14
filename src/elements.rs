@@ -1,5 +1,5 @@
 use log::debug;
-use std::{default, str::FromStr};
+use std::str::FromStr;
 
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Deserializer, Serialize};
@@ -206,26 +206,31 @@ where
     debug!("value: {:?}", value);
     match value {
         Value::Array(versions) => Ok(ApiVersion::Versions(
-            versions.iter().map(|v| v.as_str().expect("Not a valid string").to_string()).collect(),
+            versions
+                .iter()
+                .map(|v| v.as_str().expect("Not a valid string").to_string())
+                .collect(),
         )),
         Value::Object(obj) => {
             if let Some(version) = obj.get("$text") {
                 return Ok(ApiVersion::Versions(vec![version.to_string()]));
             }
-            let max = obj.get("@maximum")
+            let max = obj
+                .get("@maximum")
                 .or_else(|| obj.get("maximum"))
                 .expect("Missing maximum")
                 .as_str()
                 .expect("Not a valid string")
                 .to_string();
-            let min = obj.get("@minimum")
+            let min = obj
+                .get("@minimum")
                 .or_else(|| obj.get("minimum"))
                 .expect("Missing minimum")
                 .as_str()
                 .expect("Not a valid string")
                 .to_string();
             Ok(ApiVersion::VersionRange(max, min))
-        },
+        }
         _ => Err(serde::de::Error::custom("Invalid version")),
     }
 }
@@ -267,24 +272,6 @@ where
         per_page: Option<T>,
     }
     Ok(Helper::<T>::deserialize(deserializer)?.per_page)
-}
-
-fn de_min_max<'de, D, T>(deserializer: D) -> Result<Option<(T, T)>, D::Error>
-where
-    D: Deserializer<'de>,
-    T: Deserialize<'de>,
-{
-    #[derive(Deserialize)]
-    struct Helper<T> {
-        #[serde(alias = "@minimum")]
-        minimum: T,
-        #[serde(alias = "@maximum")]
-        maximum: T,
-    }
-    match Helper::<T>::deserialize(deserializer) {
-        Ok(helper) => Ok(Some((helper.minimum, helper.maximum))),
-        Err(_) => Ok(None),
-    }
 }
 
 fn de_from_str<'de, D, T>(deserializer: D) -> Result<T, D::Error>

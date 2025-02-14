@@ -1,10 +1,16 @@
+mod apis;
 mod elements;
+mod error;
 
 pub mod prelude {
-    pub use crate::elements::{Attributes, ElementRef, ElementType, Node, Relation, Tag, Way, OSM};
+    pub use crate::{apis::*, elements::*, error::*};
 }
 
-pub const API_URL: &str = "https://api.openstreetmap.org/api/0.6/";
+#[cfg(not(debug_assertions))]
+pub const API_URL: &str = "https://api.openstreetmap.org";
+
+#[cfg(debug_assertions)]
+pub const API_URL: &str = "https://master.apis.dev.openstreetmap.org";
 
 pub struct Bbox {
     pub min_lat: f64,

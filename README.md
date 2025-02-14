@@ -1,7 +1,7 @@
 # OpenStreetMap API Rust Binding
 
 A Rust binding for the [OpenStreetMap API](https://wiki.openstreetmap.org/wiki/API#REST_specifications_for_the_editing_API) that allows you to interact with OpenStreetMap data programmatically. This crate aims to provide a simple and efficient way to access and manipulate OSM data in your Rust projects.
-**NOTE: This project is still on erly stages of development, and many function are not yet implemented. If you interested in contributing, please feel free to do so.**
+**NOTE: This project is still on early stages of development, and many function are not yet implemented. If you interested in contributing, please feel free to do so.**
 
 ## Features
 
